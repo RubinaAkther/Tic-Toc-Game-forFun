@@ -1,12 +1,55 @@
-# React + Vite
+# Modern Tic Tac Toe Game 🎮
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A **modern, dark-themed Tic Tac Toe game** built with **React** and **Tailwind CSS**, featuring **state management**, **game history tracking**, and **time-travel functionality**. Fully deployable to the web using **Vercel**.
 
-Currently, two official plugins are available:
+![Tic Tac Toe Screenshot](screenshot.png) <!-- Optional: add your screenshot -->
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- ✅ **Modern dark UI** with hover effects and neon-inspired colors  
+- ✅ **X / O colored indicators** for clear gameplay  
+- ✅ **Game history timeline** with current move highlight  
+- ✅ **Time travel** – jump back to any previous move  
+- ✅ **Winner detection** for rows, columns, and diagonals  
+- ✅ Fully **responsive** design for desktop and mobile  
+- ✅ Easy **deployment to Vercel**
+
+---
+
+## Live Demo
+
+Check it out live on [Vercel](https://your-project-link.vercel.app)
+
+---
+
+## Technologies Used
+
+- [React](https://reactjs.org) – Frontend framework  
+- [Tailwind CSS](https://tailwindcss.com) – Modern utility-first styling  
+- [Vercel](https://vercel.com) – Deployment and hosting  
+- JavaScript (ES6+) for game logic and state management
+
+---
+
+## Installation & Setup
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/tic-tac-toe-react.git
+cd tic-tac-toe-react
+```
+2. Install dependencies:
+```bash
+npm install
+```
+3. Run the project locally:
+```bash
+npm run dev
+```
+Open your browser at http://localhost:5173
+
+## Live Link:
+https://tic-toc-game-for-fun.vercel.app/
