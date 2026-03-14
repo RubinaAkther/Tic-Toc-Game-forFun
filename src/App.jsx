@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 function Square({ value, onSquareClick }) {
   return (
@@ -16,11 +16,7 @@ function Square({ value, onSquareClick }) {
     >
       <span
         className={
-          value === "X"
-            ? "text-cyan-400"
-            : value === "O"
-            ? "text-pink-400"
-            : ""
+          value === 'X' ? 'text-cyan-400' : value === 'O' ? 'text-pink-400' : ''
         }
       >
         {value}
@@ -31,19 +27,21 @@ function Square({ value, onSquareClick }) {
 
 const Board = ({ xIsNext, squares, onPlay }) => {
   const winner = calculateWinner(squares);
+  const isDraw = squares.every(Boolean) && !winner; // All squares filled, no winner
   let status;
 
   if (winner) {
     status = `Winner: ${winner}`;
+  } else if (isDraw) {
+    status = 'No one won. Try again!';
   } else {
-    status = "Next Player: " + (xIsNext ? "X" : "O");
+    status = 'Next Player: ' + (xIsNext ? 'X' : 'O');
   }
 
   function handleClick(i) {
-    if (squares[i] || calculateWinner(squares)) return;
-
+    if (squares[i] || winner || isDraw) return;
     const nextSquares = squares.slice();
-    nextSquares[i] = xIsNext ? "X" : "O";
+    nextSquares[i] = xIsNext ? 'X' : 'O';
     onPlay(nextSquares);
   }
 
@@ -55,11 +53,7 @@ const Board = ({ xIsNext, squares, onPlay }) => {
 
       <div className="grid grid-cols-3 gap-3">
         {squares.map((sq, i) => (
-          <Square
-            key={i}
-            value={sq}
-            onSquareClick={() => handleClick(i)}
-          />
+          <Square key={i} value={sq} onSquareClick={() => handleClick(i)} />
         ))}
       </div>
     </>
@@ -72,6 +66,8 @@ export default function Game() {
   const [xIsNext, setXIsNext] = useState(true);
 
   const currentSquares = history[currentMove];
+  const winner = calculateWinner(currentSquares);
+  const isDraw = currentSquares.every(Boolean) && !winner;
 
   function handlePlay(nextSquares) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
@@ -85,9 +81,15 @@ export default function Game() {
     setXIsNext(move % 2 === 0);
   }
 
+  function resetGame() {
+    setHistory([Array(9).fill(null)]);
+    setCurrentMove(0);
+    setXIsNext(true);
+  }
+
   const moves = history.map((squares, move) => {
     const isCurrent = move === currentMove;
-    const player = move % 2 === 0 ? "O" : "X";
+    const player = move % 2 === 0 ? 'O' : 'X';
 
     return (
       <li key={move}>
@@ -97,21 +99,19 @@ export default function Game() {
           w-full text-left p-3 rounded-lg
           flex items-center justify-between
           transition
-          ${
-            isCurrent
-              ? "bg-gray-700 border border-gray-500"
-              : "bg-gray-800 hover:bg-gray-700"
-          }
+          ${isCurrent
+            ? 'bg-gray-700 border border-gray-500'
+            : 'bg-gray-800 hover:bg-gray-700'}
           `}
         >
           <span className="text-sm text-gray-200">
-            {move === 0 ? "Game Start" : `Move ${move}`}
+            {move === 0 ? 'Game Start' : `Move ${move}`}
           </span>
 
           {move !== 0 && (
             <span
               className={`font-bold ${
-                player === "X" ? "text-cyan-400" : "text-pink-400"
+                player === 'X' ? 'text-cyan-400' : 'text-pink-400'
               }`}
             >
               {player}
@@ -123,36 +123,26 @@ export default function Game() {
   });
 
   return (
-    <div
-      className="
-      min-h-screen
-      bg-gray-950
-      flex
-      items-center
-      justify-center
-      text-white
-      "
-    >
-      <div
-        className="
-        bg-gray-900
-        p-8
-        rounded-2xl
-        shadow-2xl
-        border border-gray-800
-        flex gap-10
-        "
-      >
+    <div className="min-h-screen bg-gray-950 flex items-center justify-center text-white">
+      <div className="bg-gray-900 p-8 rounded-2xl shadow-2xl border border-gray-800 flex gap-10">
         <div>
-          <h1 className="text-3xl font-bold mb-6 text-center">
-            Tic Tac Toe
-          </h1>
+          <h1 className="text-3xl font-bold mb-6 text-center">Tic Tac Toe</h1>
 
-          <Board
-            xIsNext={xIsNext}
-            squares={currentSquares}
-            onPlay={handlePlay}
-          />
+          {isDraw ? (
+            <div className="text-center">
+              <p className="text-xl mb-4 text-red-400 font-semibold">
+                No one won. Try again!
+              </p>
+              <button
+                onClick={resetGame}
+                className="bg-cyan-500 hover:bg-cyan-400 px-4 py-2 rounded-lg font-bold"
+              >
+                Try Again
+              </button>
+            </div>
+          ) : (
+            <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+          )}
         </div>
 
         <div className="w-48">
@@ -160,9 +150,7 @@ export default function Game() {
             Game Timeline
           </h2>
 
-          <ol className="space-y-2 max-h-64 overflow-y-auto pr-1">
-            {moves}
-          </ol>
+          <ol className="space-y-2 max-h-64 overflow-y-auto pr-1">{moves}</ol>
         </div>
       </div>
     </div>
@@ -171,24 +159,19 @@ export default function Game() {
 
 function calculateWinner(squares) {
   const lines = [
-    [0,1,2],
-    [3,4,5],
-    [6,7,8],
-    [0,3,6],
-    [1,4,7],
-    [2,5,8],
-    [0,4,8],
-    [2,4,6],
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
   ];
 
   for (let i = 0; i < lines.length; i++) {
-    const [a,b,c] = lines[i];
-
-    if (
-      squares[a] &&
-      squares[a] === squares[b] &&
-      squares[a] === squares[c]
-    ) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
       return squares[a];
     }
   }
